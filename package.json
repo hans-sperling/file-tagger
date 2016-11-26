@@ -1,0 +1,32 @@
+{
+    "name"        : "file-tagger",
+    "version"     : "0.1.0",
+    "description" : "",
+    "keywords" : [
+      "file tagger",
+      "javascript",
+      "tag",
+      "mysql"
+    ],
+    "namespace"    : "FILETAGGER",
+    "dependencies" : {
+        "mysql"                : "latest",
+        "socket.io"            : "latest"
+    },
+    "repository" : {
+        "type": "git",
+        "url": "https://github.com/hans-sperling/file-tagger"
+    },
+    "project" : {
+        "url"   : "https://github.com/hans-sperling/file-tagger/projects",
+        "email" : "info@bluejade.de"
+    },
+    "bugs" : {
+        "url"   : "https://github.com/hans-sperling/file-tagger/issues",
+        "email" : "info@bluejade.de"
+    },
+    "contributors" : [{
+        "name"  : "Danny Grübl",
+        "email" : "info@bluejade.de"
+    }]
+}
