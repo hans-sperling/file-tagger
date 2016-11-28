@@ -1,0 +1,205 @@
+@import "mixins/mixin";
+@import "config/variables";
+
+@import "modules/reset";
+@import "modules/imagePreviewList";
+// ---------------------------------------------------------------------------------------------------------------------
+
+body {
+    width  : 100%;
+    height : 100%;
+
+    box-sizing : border-box;
+
+    &.dark {
+        background : url('/img/background.png');
+        background-attachment:fixed;
+    }
+
+    &.bright {
+        background : #EEE;
+    }
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+.hidden {
+    display : none;
+}
+
+.noselect {
+    @include no-select;
+}
+
+// -------------------------------------------------------------------------------------------------------------- Header
+
+.header {
+    width      : 100%;
+    height     : 80px;
+    background : #222;
+}
+
+// ------------------------------------------------------------------------------------------------------------- Formbar
+
+.formbar {
+    position   : fixed;
+    top        : 0;
+    left       : 0;
+    width      : $formbarWidth;
+    height     : 100%;
+    background : rgba(68,68,68,1.0);
+}
+
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+.image-preview-list {
+    width      : calc(100% - #{$formbarWidth});
+    height     : 100%;
+    position: relative;
+    left: $formbarWidth;
+    padding    : 5px 5px 5px 5px;
+    box-sizing : border-box;
+    list-style : none;
+    display: inline-block;
+
+}
+
+
+.image-preview-list-item {
+    
+    position   : relative;
+    float      : left;
+    overflow   : hidden;
+    width      : 240px;
+    height     : 200px;
+    box-sizing : border-box;
+
+
+    .inner {
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+        margin: 5px;
+        padding: 5px;
+        box-sizing: border-box;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    .image,
+    img {
+        position   : relative;
+        top        : 0;
+        right      : 0;
+        bottom     : 0;
+        left       : 0;
+        min-width  : 48px;
+        min-height : 48px;
+        width      : auto;
+        height     : auto;
+        max-width  : 220px;
+        max-height : 180px;
+        margin     : auto;
+        display    : block;
+    }
+}
+
+// ------------------------------------------------------------------------------------------------------------ Lightbox
+
+.lightbox {
+    $padding : 10px;
+
+    // ----
+
+    box-sizing : border-box;
+    width      : calc(100% - #{$formbarWidth});
+    left       : $formbarWidth;
+    position   : fixed;
+    top        : 0;
+    height     : 100%;
+    padding    : 0 $padding;
+    background : rgba(0,0,0,0.5);
+
+    /* stackoverflow.com/questions/4982480/how-to-set-the-margin-or-padding-as-percentage-of-height-or-parent-container */
+    &::before,
+    &::after {
+        width   : 100%;
+        height  : $padding;
+        display : block;
+        content : '';
+    }
+
+    .lightbox-inner {
+        @include no-select;
+
+        position   : relative;
+        width      : 100%;
+        height     : calc(100% - #{$padding*2});
+        background : #222222;
+
+        img {
+            position   : absolute;
+            top        : 0;
+            bottom     : 0;
+            left       : 0;
+            right      : 0;
+            min-height : 48px;
+            min-width  : 48px;
+            height     : auto;
+            width      : auto;
+            max-height : 100%;
+            max-width  : 100%;
+            margin     : auto;
+            display    : block;
+        }
+    }
+
+    .navigation {
+        position   : absolute;
+        width      : 30px;
+        height     : 30px;
+        background : rgb(0,63,255);
+
+        &.close {
+            top   : 15px;
+            right : 15px;
+        }
+
+        &.prev {
+            bottom : 15px;
+            left   : calc(50% - 45px);
+        }
+
+        &.next {
+            bottom : 15px;
+            right  : calc(50% - 45px);
+
+        }
+    }
+}
+
+@media (max-width: $mobileBreakpoint)  {
+    .formbar {
+        position   : fixed;
+        height     : $formbarHeight;
+        width      : 100%;
+        background : rgba(68,68,68,1.0);
+        z-index: 1;
+    }
+
+    .image-preview-list {
+        top: $formbarHeight;
+        padding : 5px 5px 5px;
+        left: 0;
+        width: 100%;
+        position: relative;
+
+    }
+
+    .lightbox {
+        top   : $formbarHeight;
+        left: 0;
+        width: 100%;
+    }
+}

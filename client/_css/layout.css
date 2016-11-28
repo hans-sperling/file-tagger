@@ -1,0 +1,208 @@
+.image-preview-list.col-1 .image-preview-list-item {
+  width: 100%; }
+
+.image-preview-list.col-2 .image-preview-list-item {
+  width: 50%; }
+
+.image-preview-list.col-3 .image-preview-list-item {
+  width: 33.33333%; }
+
+.image-preview-list.col-4 .image-preview-list-item {
+  width: 25%; }
+
+.image-preview-list.col-5 .image-preview-list-item {
+  width: 20%; }
+
+.image-preview-list.col-6 .image-preview-list-item {
+  width: 16.66667%; }
+
+.image-preview-list.col-7 .image-preview-list-item {
+  width: 14.28571%; }
+
+.image-preview-list.col-8 .image-preview-list-item {
+  width: 12.5%; }
+
+.image-preview-list.col-9 .image-preview-list-item {
+  width: 11.11111%; }
+
+.image-preview-list.col-10 .image-preview-list-item {
+  width: 10%; }
+
+.image-preview-list.col-11 .image-preview-list-item {
+  width: 9.09091%; }
+
+.image-preview-list.col-12 .image-preview-list-item {
+  width: 8.33333%; }
+
+.image-preview-list.col-13 .image-preview-list-item {
+  width: 7.69231%; }
+
+.image-preview-list.col-14 .image-preview-list-item {
+  width: 7.14286%; }
+
+.image-preview-list.col-15 .image-preview-list-item {
+  width: 6.66667%; }
+
+.image-preview-list.col-16 .image-preview-list-item {
+  width: 6.25%; }
+
+.image-preview-list.col-17 .image-preview-list-item {
+  width: 5.88235%; }
+
+.image-preview-list.col-18 .image-preview-list-item {
+  width: 5.55556%; }
+
+.image-preview-list.col-19 .image-preview-list-item {
+  width: 5.26316%; }
+
+.image-preview-list.col-20 .image-preview-list-item {
+  width: 5%; }
+
+body {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box; }
+  body.dark {
+    background: url("/img/background.png");
+    background-attachment: fixed; }
+  body.bright {
+    background: #EEE; }
+
+.hidden {
+  display: none; }
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.header {
+  width: 100%;
+  height: 80px;
+  background: #222; }
+
+.formbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 100%;
+  background: #444444; }
+
+.image-preview-list {
+  width: calc(100% - 400px);
+  height: 100%;
+  position: relative;
+  left: 400px;
+  padding: 5px 5px 5px 5px;
+  box-sizing: border-box;
+  list-style: none;
+  display: inline-block; }
+
+.image-preview-list-item {
+  position: relative;
+  float: left;
+  overflow: hidden;
+  width: 240px;
+  height: 200px;
+  box-sizing: border-box; }
+  .image-preview-list-item .inner {
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    margin: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden; }
+  .image-preview-list-item .image,
+  .image-preview-list-item img {
+    position: relative;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    min-width: 48px;
+    min-height: 48px;
+    width: auto;
+    height: auto;
+    max-width: 220px;
+    max-height: 180px;
+    margin: auto;
+    display: block; }
+
+.lightbox {
+  box-sizing: border-box;
+  width: calc(100% - 400px);
+  left: 400px;
+  position: fixed;
+  top: 0;
+  height: 100%;
+  padding: 0 10px;
+  background: rgba(0, 0, 0, 0.5);
+  /* stackoverflow.com/questions/4982480/how-to-set-the-margin-or-padding-as-percentage-of-height-or-parent-container */ }
+  .lightbox::before, .lightbox::after {
+    width: 100%;
+    height: 10px;
+    display: block;
+    content: ''; }
+  .lightbox .lightbox-inner {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    position: relative;
+    width: 100%;
+    height: calc(100% - 20px);
+    background: #222222; }
+    .lightbox .lightbox-inner img {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      min-height: 48px;
+      min-width: 48px;
+      height: auto;
+      width: auto;
+      max-height: 100%;
+      max-width: 100%;
+      margin: auto;
+      display: block; }
+  .lightbox .navigation {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background: #003fff; }
+    .lightbox .navigation.close {
+      top: 15px;
+      right: 15px; }
+    .lightbox .navigation.prev {
+      bottom: 15px;
+      left: calc(50% - 45px); }
+    .lightbox .navigation.next {
+      bottom: 15px;
+      right: calc(50% - 45px); }
+
+@media (max-width: 768px) {
+  .formbar {
+    position: fixed;
+    height: 200px;
+    width: 100%;
+    background: #444444;
+    z-index: 1; }
+  .image-preview-list {
+    top: 200px;
+    padding: 5px 5px 5px;
+    left: 0;
+    width: 100%;
+    position: relative; }
+  .lightbox {
+    top: 200px;
+    left: 0;
+    width: 100%; } }

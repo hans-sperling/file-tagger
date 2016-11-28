@@ -1,0 +1,6 @@
+@for $i from 1 through 20 {
+    $currentWidth : 100 / ($i) * 1%;
+
+    // Output
+    .image-preview-list.col-#{$i}  { .image-preview-list-item { width: $currentWidth; } }
+}
