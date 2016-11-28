@@ -1,4 +1,6 @@
 var mysql = require('mysql');
+var fs    = require('fs');
+var path  = require('path');
 
 var connection = mysql.createConnection({
     host     : 'localhost',
@@ -9,14 +11,101 @@ var connection = mysql.createConnection({
 });
 
 function run() {
-    connection.connect();
+    //connection.connect();
     //uninstall();
     //install();
-    getTagsByFileLocation('img/1.jpg');
-    getFileLocationsByTagNames(['essen','Stuhl','Design','Tier']);
-    connection.end();
+    //getAllFileLocations();
+    //getTagsByFileLocation('img/1.jpg');
+    //getFileLocationsByTagNames(['essen','Stuhl','Design','Tier']);
+    //connection.end();
+
+
+
+    //walkParallel('client/data/', function(err, results) {
+    getFileLocationsAsync('client/data', function(err, results) {
+        if (err) {
+            throw err;
+        }
+        else {
+            console.log(results);
+            console.log('....-----');
+        }
+    });
 }
 
+// -------------------------------------------------------------------------------------------------- Get file locations
+
+/**
+ * @link http://stackoverflow.com/questions/5827612/node-js-fs-readdir-recursive-directory-search
+ * @param dir
+ * @param callback
+ */
+function getFileLocationsAsync(dir, callback) {
+    var results = [];
+
+    fs.readdir(dir, function(err, list) {
+        if (err) { return callback(err); }
+
+        var pending = list.length;
+
+        if (!pending)  { return callback(null, results); }
+
+        list.forEach(function(file) {
+            file = path.resolve(dir, file);
+
+            fs.stat(file, function(err, stat) {
+                if (stat && stat.isDirectory()) {
+                    getFileLocationsAsync(file, function(err, res) {
+                        results = results.concat(res);
+
+                        if (!--pending)  {
+                            callback(null, results);
+                        }
+                    });
+                }
+                else {
+                    results.push(file);
+                    callback(null, file);
+                    if (!--pending) {
+                        //callback(null, results);
+                    }
+                }
+            });
+        });
+    });
+}
+
+
+function getFileLocationsSync(dir, callback) {
+    var results = [];
+
+    fs.readdir(dir, function(err, list) {
+        if (err) { return callback(err); }
+
+        var i = 0;
+
+        (function next() {
+            var file = list[i++];
+
+            if (!file) { return callback(null, results); }
+
+            file = dir + '/' + file;
+
+            fs.stat(file, function(err, stat) {
+                if (stat && stat.isDirectory()) {
+                    getFileLocationsSync(file, function(err, res) {
+                        results = results.concat(res);
+                        next();
+                    });
+                }
+                else {
+                    results.push(file);
+                    next();
+                }
+            });
+        })();
+    });
+}
 
 // --------------------------------------------------------------------------------------------------------------- Query
 
@@ -25,9 +114,26 @@ function getTagsByFileLocation(location) {
         if (!err) {
             console.log('Result of tags from file \'' + location + '\'');
             console.log(rows);
+            return rows;
         }
         else {
             console.log('Error while getting tags from database.', err);
+            return false;
+        }
+    });
+}
+
+
+function getAllFileLocations() {
+    connection.query('SELECT files.location FROM `files`', function(err, rows, fields) {
+        if (!err) {
+            console.log('Result of all files locations');
+            console.log(rows);
+            return rows;
+        }
+        else {
+            console.log('Error while getting all file locations from database.', err);
+            return false;
         }
     });
 }
@@ -44,9 +150,11 @@ function getFileLocationsByTagNames(tagList) {
         if (!err) {
             console.log('Result of file locations by tags \'' + loweredList.join(',') + '\'');
             console.log(rows);
+            return rows;
         }
         else {
             console.log('Error while getting file locations from database.', err);
+            return false;
         }
     });
 }
@@ -93,9 +201,11 @@ function addRow_Files(location) {
     connection.query('INSERT INTO `files` (`location`) VALUES (\'' + location + '\')', function(err, rows, fields) {
         if (!err) {
             console.log('Location added to <files> table.');
+            return true;
         }
         else {
             console.log('Error while adding a file in <files> table.', err);
+            return false;
         }
     });
 }
@@ -105,9 +215,11 @@ function addRow_Tags(name) {
     connection.query('INSERT INTO `tags` (`name`, `alias`) VALUES (\'' + name.toLowerCase().replace(' ', '') + '\', \'' + name + '\')', function(err, rows, fields) {
         if (!err) {
             console.log('Name added to <tags> table.');
+            return true;
         }
         else {
             console.log('Error while adding a name in <tags> table.', err);
+
         }
     });
 }
@@ -117,9 +229,11 @@ function addRow_Files_Tags(fileId, tagId) {
     connection.query('INSERT INTO `files_tags` (`files_id`, `tags_id`) VALUES (' + fileId + ',' + tagId + ')', function(err, rows, fields) {
         if (!err) {
             console.log('Ids added to <files_tags> table.');
+            return true;
         }
         else {
             console.log('Error while adding ids in <files_tags> table.', err);
+            return false;
         }
     });
 }
@@ -131,9 +245,11 @@ function createTable_Files() {
         function(err, rows, fields) {
             if (!err) {
                 console.log('Table <files> created.');
+                return true;
             }
             else {
                 console.log('Error while creating <files> table.', err);
+                return false;
             }
         }
     );
@@ -145,9 +261,11 @@ function createTable_Tags() {
         function(err, rows, fields) {
             if (!err) {
                 console.log('Table <tags> created.');
+                return true;
             }
             else {
                 console.log('Error while creating <tags> table.', err);
+                return false;
             }
         }
     );
@@ -159,9 +277,11 @@ function createTable_Files_Tags() {
         function(err, rows, fields) {
             if (!err) {
                 console.log('Table <files> created.');
+                return true;
             }
             else {
                 console.log('Error while creating <files> table.', err);
+                return false;
             }
         }
     );

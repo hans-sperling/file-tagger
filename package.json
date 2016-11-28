@@ -10,6 +10,10 @@
     ],
     "namespace"    : "FILETAGGER",
     "dependencies" : {
+        "grunt"                : "latest",
+        "grunt-cli"            : "latest",
+        "grunt-contrib-sass"   : "latest",
+        "grunt-contrib-watch"  : "latest",
         "mysql"                : "latest",
         "socket.io"            : "latest"
     },

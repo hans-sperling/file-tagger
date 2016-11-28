@@ -9,7 +9,6 @@ var domReady=function(a){var b=!1,c=function(){document.addEventListener?(docume
 var prefixPath = '';
 var files = [
     // Layout
-    prefixPath + 'css/reset.css',
     prefixPath + 'css/layout.css',
 
     // Library scripts

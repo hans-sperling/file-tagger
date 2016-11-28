@@ -5,10 +5,11 @@
 
     var moduleName     = 'fileView',
         cfg            = {},
-        moduleScope    = '.js_imagePreviewList',
-        insertScope    = moduleScope,
-        itemScope      = '.js_imagePreviewListItem',
-        lazyScope      = '.js_lazy',
+        scopes        = {
+            module : '.js_imagePreviewList',
+            item   : '.js_imagePreviewListItem',
+            lazy   : '.js_lazy'
+        },
         itemColClass   = '',
         listWidth      = 1, // in px
         itemWidth      = 1, // in px
@@ -90,15 +91,15 @@
     // --------------------------------------------------------------------------------------------------------- Methods
 
     function addPreviewList() {
-        $(insertScope).html(getTestImagesMarkup());
+        $(scopes.module).html(getTestImagesMarkup());
 
         itemWidth     = getItemWidth();
         listWidth     = getListWidth();
         itemColAmount = Math.floor(listWidth / itemWidth);
         itemColClass  = 'col-' + itemColAmount;
 
-        $(moduleScope).addClass(itemColClass);
-        $(moduleScope).find(lazyScope).lazyload();
+        $(scopes.module).addClass(itemColClass);
+        $(scopes.module).find(scopes.lazy).lazyload();
 
         bindEvents();
 
@@ -115,19 +116,19 @@
         itemColAmount  = Math.floor(listWidth / itemWidth);
 
         if (itemColAmount != oldItemColAmount) {
-            $(moduleScope).removeClass(itemColClass);
+            $(scopes.module).removeClass(itemColClass);
 
             itemColClass  = 'col-' + itemColAmount;
-            $(moduleScope).addClass(itemColClass);
+            $(scopes.module).addClass(itemColClass);
 
             $.publish(moduleName + ':previewListUpdated', {});
-            $(moduleScope).find(lazyScope).lazyload();
+            $(scopes.module).find(scopes.lazy).lazyload();
         }
     }
 
 
     function bindEvents() {
-        $(itemScope).on('click.imagePreviewList', function(e) {
+        $(scopes.item).on('click.imagePreviewList', function(e) {
             var item   = $(this),
             imgSrc = $(this).find('.js_image').attr('data-original');
 
@@ -146,12 +147,12 @@
 
 
     function getItemWidth() {
-        return $(itemScope).outerWidth(true);
+        return $(scopes.item).outerWidth(true);
     }
 
 
     function getListWidth() {
-        return $(moduleScope).width();
+        return $(scopes.module).width();
     }
 
 
