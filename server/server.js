@@ -22,13 +22,23 @@ function run() {
 
 
     //walkParallel('client/data/', function(err, results) {
-    getFileLocationsAsync('client/data', function(err, results) {
+    getFileLocationsAsync('client/data', function(err, locations) {
+        var amount, i, location;
         if (err) {
             throw err;
         }
         else {
-            console.log(results);
-            console.log('....-----');
+            amount = locations.length;
+
+            for (i = 0; i < amount; i++) {
+                location = locations[i];
+
+                dosth(location);
+            }
+
+            function dosth(location) {
+                console.log(location);
+            }
         }
     });
 }
@@ -65,9 +75,8 @@ function getFileLocationsAsync(dir, callback) {
                 }
                 else {
                     results.push(file);
-                    callback(null, file);
                     if (!--pending) {
-                        //callback(null, results);
+                        callback(null, results);
                     }
                 }
             });
