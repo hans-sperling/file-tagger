@@ -11,19 +11,20 @@ var connection = mysql.createConnection({
 });
 
 function run() {
-    //connection.connect();
+    connection.connect();
+
     //uninstall();
-    //install();
-    //getAllFileLocations();
-    //getTagsByFileLocation('img/1.jpg');
-    //getFileLocationsByTagNames(['essen','Stuhl','Design','Tier']);
-    //connection.end();
+    install(function onEnd() {
+        connection.end();
+    });
+}
 
 
-
-    //walkParallel('client/data/', function(err, results) {
+function getAllRelativeFileLocations(callback) {
     getFileLocationsAsync('client/data', function(err, locations) {
-        var amount, i, location;
+        var amount, i, location,
+            relativeLocations = [];
+
         if (err) {
             throw err;
         }
@@ -31,14 +32,10 @@ function run() {
             amount = locations.length;
 
             for (i = 0; i < amount; i++) {
-                location = locations[i];
-
-                dosth(location);
+                relativeLocations.push(locations[i].replace(process.cwd() + '\\client\\','').split('\\').join('/'));
             }
 
-            function dosth(location) {
-                console.log(location);
-            }
+            callback(relativeLocations);
         }
     });
 }
@@ -170,38 +167,18 @@ function getFileLocationsByTagNames(tagList) {
 
 // ------------------------------------------------------------------------------------------------------------- Install
 
-function install() {
+function install(callback) {
     createTable_Files();
-    addRow_Files('img/1.jpg');
-    addRow_Files('img/2.jpg');
-    addRow_Files('img/3.jpg');
-
     createTable_Tags();
-    addRow_Tags('Stuhl');   // 1
-    addRow_Tags('Design');  // 2
-    addRow_Tags('Heizung'); // 3
-    addRow_Tags('sitzen');  // 4
-    addRow_Tags('essen');   // 5
-    addRow_Tags('fish');    // 6
-    addRow_Tags('chips');   // 7
-    addRow_Tags('Tier');    // 8
-    addRow_Tags('Party');   // 9
-    addRow_Tags('Kelle');   // 10
-
     createTable_Files_Tags();
-    addRow_Files_Tags(1,1);  // Stuhl
-    addRow_Files_Tags(1,2);  // Design
-    addRow_Files_Tags(1,3);  // Heizung
-    addRow_Files_Tags(1,4);  // sitzen
-    addRow_Files_Tags(2,5);  // essen
-    addRow_Files_Tags(2,6);  // sish
-    addRow_Files_Tags(2,7);  // chips
-    addRow_Files_Tags(2,8);  // Tier
-    addRow_Files_Tags(2,9);  // Party
-    addRow_Files_Tags(3,2);  // Design
-    addRow_Files_Tags(3,5);  // essen
-    addRow_Files_Tags(3,8);  // Tier
-    addRow_Files_Tags(3,10); // Kelle
+
+    getAllRelativeFileLocations(function (locations) {
+        for (var i = 0; i < locations.length; i++) {
+            addRow_Files(locations[i]);
+        }
+
+        callback();
+    });
 }
 
 // --------------------------------------------------------------------------------------------------------- Add row
